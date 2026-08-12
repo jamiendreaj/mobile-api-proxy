@@ -1,0 +1,3 @@
+# Local development secrets. Never commit this file.
+UPSTREAM_API_KEY="replace-me"
+APP_TOKEN="replace-me"

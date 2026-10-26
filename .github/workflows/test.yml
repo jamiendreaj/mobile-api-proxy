@@ -1,0 +1,19 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # No install step: the suite uses only node:test and the Worker's own
+      # source, and `fetch` is stubbed, so nothing leaves the runner and no
+      # key is needed to run it.
+      - run: npm test

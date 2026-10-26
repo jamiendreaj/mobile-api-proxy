@@ -103,6 +103,32 @@ Set `UPSTREAM_URL` in `src/index.js` to whichever API you are calling, and adjus
 the auth header to match what that provider expects — some want
 `Authorization: Bearer`, others a custom header such as `x-api-key`.
 
+## Tests
+
+```bash
+npm test
+```
+
+18 tests, all offline. `fetch` is stubbed, so nothing leaves the machine and no
+key is needed to run them.
+
+This Worker makes one claim — the upstream key reaches the upstream service and
+nowhere else — and a claim like that is worth very little until something checks
+it on every change. So six of the tests exist purely to try to get the key back
+out: on success, on a 400, on a 500 with a verbose body, in the misconfiguration
+error, in the 401, and through a caller trying to point the Worker at an
+endpoint of their own.
+
+The rest cover the things that are easy to get wrong later:
+
+- an oversized body is refused **before** the upstream call, so a 50MB payload
+  is never billed to the account this exists to protect
+- the 401 does not reveal the token it was expecting
+- the upstream status is passed through rather than flattened to 200
+- the response is streamed, not buffered into a new body — the README promises
+  no copy of user content sits in the middle, and that is now asserted
+- the body is forwarded byte for byte, with no re-encoding
+
 ## Why Cloudflare Workers
 
 Free tier of 100,000 requests a day, deploys in seconds, and runs close to the

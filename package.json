@@ -1,0 +1,13 @@
+{
+  "name": "mobile-api-proxy",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "A small Cloudflare Worker that holds a third-party API key server-side, so a mobile app never carries it.",
+  "scripts": {
+    "test": "node --test \"src/*.test.js\"",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "license": "MIT"
+}
